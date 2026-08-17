@@ -1,0 +1,228 @@
+/* ---------------------------------------------------------------------
+   Theme tokens. Every color in the app is one of these CSS variables via
+   the Tailwind color functions configured in index.html, so switching the
+   `dark` / `light` class on <html> re-themes the whole app at once.
+   Values are "R G B" triplets so Tailwind's opacity modifiers keep working.
+   Ported 1:1 from the original React build's index.css.
+   --------------------------------------------------------------------- */
+.dark {
+  --color-background: 15 16 17;
+  --color-background-alt: 9 10 11;
+  --color-card: 46 46 46;
+  --color-card-raised: 63 64 65;
+  --color-primary: 0 179 221;
+  --color-accent: 132 125 255;
+  --color-success: 52 211 153;
+  --color-warning: 251 191 36;
+  --color-danger: 248 81 73;
+  --color-ink: 245 245 247;
+  --color-muted: 159 159 160;
+  --color-grid-dot: 106 107 107;
+  --color-scrollbar: 46 46 46;
+  --color-scrollbar-hover: 63 64 65;
+  --color-on-primary: 0 0 0;
+  --color-vignette-center: 22 26 32;
+  --color-vignette-edge: 15 16 17;
+  --color-ring: 255 255 255;
+}
+
+.light {
+  --color-background: 245 245 247;
+  --color-background-alt: 202 202 202;
+  --color-card: 255 255 255;
+  --color-card-raised: 245 245 247;
+  --color-primary: 75 73 170;
+  --color-accent: 123 41 118;
+  --color-success: 22 163 74;
+  --color-warning: 180 96 6;
+  --color-danger: 220 38 38;
+  --color-ink: 15 16 17;
+  --color-muted: 106 107 107;
+  --color-grid-dot: 154 154 154;
+  --color-scrollbar: 224 224 224;
+  --color-scrollbar-hover: 200 200 200;
+  --color-on-primary: 255 255 255;
+  --color-vignette-center: 255 255 255;
+  --color-vignette-edge: 245 245 247;
+  --color-ring: 15 16 17;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: auto;
+}
+
+/* Safety net: the page must always be able to scroll vertically. The splash
+   screen briefly sets `overflow:hidden` inline on <body> and always clears it
+   itself, but this default guarantees normal pages are never scroll-locked
+   even if that inline style is ever left behind. Horizontal scroll is
+   disabled here on purpose so nothing (e.g. the tab strip) can widen the page. */
+html, body {
+  overflow-x: hidden;
+}
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-ink));
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-y: auto;
+  min-height: 100%;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgb(var(--color-background)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--color-scrollbar)); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-scrollbar-hover)); }
+
+.font-display {
+  font-family: "DM Serif Display", "Lyon Display", ui-serif, Georgia, serif;
+}
+.font-mono {
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.bg-radar-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgb(var(--color-grid-dot) / 0.16) 1px, transparent 0);
+  background-size: 26px 26px;
+}
+
+.bg-vignette {
+  background-image: radial-gradient(
+    ellipse 80% 55% at 50% -8%,
+    rgb(var(--color-vignette-center)) 0%,
+    rgb(var(--color-vignette-edge)) 65%
+  );
+}
+
+@keyframes phone-float {
+  0%, 100% { transform: translateY(0) rotateY(-22deg) rotateX(6deg) rotateZ(-2deg); }
+  50% { transform: translateY(-22px) rotateY(-6deg) rotateX(2deg) rotateZ(1deg); }
+}
+@keyframes scan-sweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(420%); opacity: 0; }
+}
+@keyframes bubble-pop {
+  0%, 100% { transform: scale(0.9); opacity: 0.5; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+@keyframes shield-spin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+@keyframes shield-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.45s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-toast-in { animation: toastIn 0.25s ease both; }
+
+/* -----------------------------------------------------------------
+   Component classes - ported 1:1 from the original @layer components
+   ----------------------------------------------------------------- */
+.card {
+  background-color: rgb(var(--color-card));
+  border-radius: 1rem;
+  border: 1px solid rgb(var(--color-ink) / 0.1);
+  position: relative;
+}
+.card-glow {
+  background-color: rgb(var(--color-card));
+  border-radius: 1rem;
+  border: 1px solid rgb(var(--color-ink) / 0.1);
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.card-glow:hover {
+  background-color: rgb(var(--color-card-raised));
+  border-color: rgb(var(--color-primary) / 0.3);
+}
+.btn-primary {
+  background-color: rgb(var(--color-ink));
+  color: rgb(var(--color-background));
+  font-weight: 400;
+  padding: 0.75rem 18px;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid rgb(var(--color-ink) / 0.25);
+  color: rgb(var(--color-ink));
+  font-weight: 400;
+  padding: 0.75rem 18px;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: border-color 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+.btn-secondary:hover { border-color: rgb(var(--color-ink) / 0.5); background-color: rgb(var(--color-ink) / 0.05); }
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+.input-field {
+  width: 100%;
+  background-color: rgb(var(--color-background));
+  border: 1px solid rgb(var(--color-ink) / 0.15);
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  color: rgb(var(--color-ink));
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.input-field::placeholder { color: rgb(var(--color-muted)); }
+.input-field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(var(--color-primary) / 0.6);
+  border-color: rgb(var(--color-primary));
+}
+.label {
+  display: block;
+  font-size: 0.75rem;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: rgb(var(--color-muted));
+  margin-bottom: 0.375rem;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 11px;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgb(var(--color-ink));
+  background-color: rgb(var(--color-ink) / 0.12);
+  border: 1px solid rgb(var(--color-ink) / 0.15);
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
