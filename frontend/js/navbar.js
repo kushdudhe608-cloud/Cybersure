@@ -20,9 +20,8 @@ let mobileOpen = false;
 function themeToggleHtml() {
   const dark = getTheme() === "dark";
   return `
-    <button id="theme-toggle" aria-label="${dark ? "Switch to light mode" : "Switch to dark mode"}"
-      class="relative w-9 h-9 rounded-full border border-ink/10 bg-ink/5 hover:border-ink/25 hover:bg-primary/10 flex items-center justify-center transition-colors overflow-hidden">
-      <i data-lucide="${dark ? "moon" : "sun"}" class="w-4 h-4 ${dark ? "text-primary" : "text-accent"}"></i>
+    <button class="theme-toggle-btn relative w-9 h-9 rounded-full border border-ink/10 bg-ink/5 hover:border-ink/25 hover:bg-primary/10 flex items-center justify-center transition-colors overflow-hidden" aria-label="${dark ? "Switch to light mode" : "Switch to dark mode"}">
+       <i data-lucide="${dark ? "moon" : "sun"}" class="w-4 h-4 ${dark ? "text-primary" : "text-accent"}"></i>
     </button>`;
 }
 
@@ -89,7 +88,7 @@ export function renderNavbar() {
 
   icons();
 
-  root.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
+   root.querySelectorAll(".theme-toggle-btn").forEach((btn) => btn.addEventListener("click", toggleTheme));
   root.querySelectorAll(".mobile-link").forEach((el) => el.addEventListener("click", () => (mobileOpen = false)));
   root.querySelector("#mobile-toggle")?.addEventListener("click", () => {
     mobileOpen = !mobileOpen;

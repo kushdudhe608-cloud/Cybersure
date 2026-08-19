@@ -50,8 +50,6 @@ export function render(root) {
           style="background:linear-gradient(rgb(var(--color-background)), rgb(var(--color-background-alt)) 55%, transparent 100%)" aria-hidden="true"></div>
 
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 relative text-center">
-          <div class="eyebrow mx-auto mb-8 animate-fade-in-up"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Hackathon Project 2026</div>
-
           <h1 class="font-display font-normal text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink animate-fade-in-up" style="animation-delay:.05s">
             See the scam <em class="italic text-primary">before</em> it sees you.
           </h1>
