@@ -5,7 +5,7 @@ const team = [
   { name: "Kalyani Khandve", role: "QA & Documentation" },
 ];
 
-const techStack = ["HTML5", "CSS3", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT"];
+const techStack = ["HTML5", "CSS3", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "JWT"];
 
 function sectionHtml(icon, title, body) {
   return `
