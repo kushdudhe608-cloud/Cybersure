@@ -1,7 +1,7 @@
 const team = [
-  { name: "Mehak Merai", role: "Team Lead & Full Stack Developer" },
+  { name: "Mehak Merai", role: "Backend & Lead" },
   { name: "Anushka Phirke", role: "UI/UX Designer" },
-  { name: "Kush Dudhe", role: "Backend & AI Logic" },
+  { name: "Kush Dudhe", role: "Full Stack Developer" },
   { name: "Kalyani Khandve", role: "QA & Documentation" },
 ];
 
@@ -21,8 +21,7 @@ function sectionHtml(icon, title, body) {
 export function render(root) {
   root.innerHTML = `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <div class="text-center mb-12">
-        <div class="eyebrow mb-4"><i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Hackathon Project</div>
+            <div class="text-center mb-12">
         <h1 class="font-display text-3xl font-normal tracking-tight">About CyberSure</h1>
         <p class="text-muted mt-3 max-w-2xl mx-auto">
           CyberSure was built by team Nexus to make digital security checks fast, free, and easy to understand for everyone.

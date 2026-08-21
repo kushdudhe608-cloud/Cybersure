@@ -26,7 +26,7 @@ export function renderFooter() {
         <div>
           <h4 class="text-sm font-semibold text-ink/90 mb-3">Contact</h4>
           <ul class="space-y-2 text-sm text-muted font-mono">
-            <li class="flex items-center gap-2 hover:text-primary transition-colors"><i data-lucide="mail" class="w-4 h-4"></i> hello@cybersure.io</li>
+            <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> <a href="mailto:cybersure2k26@gmail.com" class="hover:text-primary transition-colors">cybersure2k26@gmail.com</a></li>
             <li class="flex items-center gap-2 hover:text-primary transition-colors"><i data-lucide="github" class="w-4 h-4"></i> github.com/cybersure</li>
           </ul>
         </div>
