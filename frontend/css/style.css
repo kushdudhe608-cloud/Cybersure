@@ -130,7 +130,30 @@ body {
   from { opacity: 0; transform: translateY(-14px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes themeIconIn {
+  from { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+  to { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes iconPop {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.15) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes countUpFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.45s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-toast-in { animation: toastIn 0.25s ease both; }
 .animate-nav-in { animation: navIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-theme-icon-in { animation: themeIconIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+.animate-float { animation: floatY 4.5s ease-in-out infinite; }
+.animate-float-slow { animation: floatY 6s ease-in-out infinite; animation-delay: .8s; }
+.group:hover .group-hover-icon-pop { animation: iconPop 0.5s ease; }
 
 /* -----------------------------------------------------------------
    Component classes - ported 1:1 from the original @layer components
