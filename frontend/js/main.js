@@ -1,6 +1,7 @@
 import { initAuth } from "./auth.js";
 import { addRoute, setNotFound, render, installLinkInterceptor } from "./router.js";
 import { renderNavbar } from "./navbar.js";
+import { renderBottomNav } from "./bottomNav.js";
 import { renderFooter } from "./footer.js";
 import { showSplashIfNeeded } from "./splash.js";
 
@@ -35,11 +36,13 @@ setNotFound(async () => {
 
 async function boot() {
   renderNavbar();
+  renderBottomNav();
   renderFooter();
   installLinkInterceptor();
   await initAuth();
   await render();
   renderNavbar(); // re-render once auth state is resolved (Login/Sign up <-> user menu)
+  renderBottomNav();
 }
 
 showSplashIfNeeded(boot);
