@@ -4,7 +4,7 @@ const features = [
   { icon: "globe", title: "Website Scanner", description: "Checks URLs for HTTPS, domain age, and brand-impersonation red flags.", tab: "website" },
   { icon: "mail", title: "Email Scanner", description: "Flags urgency language, spoofed senders, and phishing links in emails.", tab: "email" },
   { icon: "qr-code", title: "QR Scanner", description: "Decodes QR codes and analyzes the destination URL before you visit it.", tab: "qr" },
-  { icon: "message-circle", title: "WhatsApp Scanner", description: "Detects lottery, OTP, courier, and investment scam message patterns.", tab: "whatsapp" },
+  { icon: "message-circle", title: "SMS Scanner", description: "Detects lottery, OTP, courier, and investment scam message patterns.", tab: "whatsapp" },
   { icon: "briefcase", title: "Job Scam Detector", description: "Spots fake HR offers, joining fees, and unrealistic salary claims.", tab: "job" },
   { icon: "key-round", title: "Fake Login Detector", description: "Identifies phishing pages designed to imitate real login screens.", tab: "login" },
 ];

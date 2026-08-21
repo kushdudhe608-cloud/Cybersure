@@ -20,6 +20,9 @@ export async function render(root) {
   }
 
   const colors = CHART_COLORS[getTheme()];
+  const isNewSignup = sessionStorage.getItem("cybersure_new_signup") === "1";
+sessionStorage.removeItem("cybersure_new_signup");
+const greeting = isNewSignup ? "Welcome" : "Welcome back";
   const pieData = [
     { name: "Safe", value: stats?.safe || 0 },
     { name: "Suspicious", value: stats?.suspicious || 0 },
@@ -38,7 +41,7 @@ export async function render(root) {
 
   root.innerHTML = `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 class="font-display text-2xl font-normal tracking-tight mb-1">Welcome back, ${escapeHtml((authState.user?.name || "").split(" ")[0] || "")}</h1>
+      <h1 class="font-display text-2xl font-normal tracking-tight mb-1">${greeting}, ${escapeHtml((authState.user?.name || "").split(" ")[0] || "")}</h1>
       <p class="text-muted mb-8">Here's a snapshot of your scanning activity.</p>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

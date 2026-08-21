@@ -3,6 +3,8 @@ import { statusBadgeClass, escapeHtml, icons } from "../ui.js";
 
 const TYPES = ["website", "email", "whatsapp", "job", "qr", "phone", "login", "screenshot", "document"];
 const STATUSES = ["Safe", "Suspicious", "Dangerous"];
+const TYPE_LABELS = { whatsapp: "SMS" };
+const typeLabel = (t) => TYPE_LABELS[t] || t.charAt(0).toUpperCase() + t.slice(1);
 
 export function render(root) {
   const filters = { page: 1, search: "", type: "", status: "" };
@@ -40,7 +42,7 @@ export function render(root) {
               (item) => `
             <tr class="border-t border-ink/5 hover:bg-white/[0.02]">
               <td class="p-4 text-muted/70 whitespace-nowrap">${new Date(item.createdAt).toLocaleString()}</td>
-              <td class="p-4 capitalize text-ink/70">${escapeHtml(item.type)}</td>
+              <td class="p-4 text-ink/70">${escapeHtml(typeLabel(item.type))}</td>
               <td class="p-4 text-muted max-w-[280px] truncate">${escapeHtml(item.input)}</td>
               <td class="p-4 text-ink/70">${item.riskScore}%</td>
               <td class="p-4"><span class="${statusBadgeClass(item.status)}">${item.status}</span></td>
@@ -82,7 +84,7 @@ export function render(root) {
         </div>
         <select id="hist-type" class="input-field sm:w-48">
           <option value="">All Types</option>
-          ${TYPES.map((t) => `<option value="${t}">${t}</option>`).join("")}
+          ${TYPES.map((t) => `<option value="${t}">${escapeHtml(typeLabel(t))}</option>`).join("")}
         </select>
         <select id="hist-status" class="input-field sm:w-48">
           <option value="">All Statuses</option>

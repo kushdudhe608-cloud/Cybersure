@@ -6,7 +6,7 @@ import { toast, icons, resultCardHtml, mountResultCard, escapeHtml } from "../ui
 const tabs = [
   { key: "website", label: "Website", icon: "globe" },
   { key: "email", label: "Email", icon: "mail" },
-  { key: "whatsapp", label: "WhatsApp", icon: "message-circle" },
+  { key: "whatsapp", label: "SMS", icon: "message-circle" },
   { key: "job", label: "Job Offer", icon: "briefcase" },
   { key: "qr", label: "QR Code", icon: "qr-code" },
   { key: "phone", label: "Phone Number", icon: "phone" },
@@ -45,7 +45,7 @@ function submitButtonHtml() {
   return `<button type="submit" class="btn-primary flex items-center gap-2"><span>Analyze</span></button>`;
 }
 
-// ---------- Website / Email / WhatsApp / Phone / Login: simple single-field checkers ----------
+// ---------- Website / Email / SMS / Phone / Login: simple single-field checkers ----------
 
 const SIMPLE_CHECKERS = {
   website: {
@@ -94,7 +94,7 @@ const SIMPLE_CHECKERS = {
     emptyError: "Please paste the email content",
   },
   whatsapp: {
-    title: "WhatsApp Scan",
+    title: "SMS Scan",
     fieldLabel: "Paste Message",
     placeholder: "Congratulations! You have won a lottery of $10,000...",
     icon: null,

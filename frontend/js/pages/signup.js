@@ -39,6 +39,7 @@ export function render(root) {
     btn.querySelector("span").textContent = "Creating account...";
     try {
       await signup(name, email, password, confirmPassword);
+      sessionStorage.setItem("cybersure_new_signup", "1");
       toast.success("Account created!");
       navigate("/dashboard");
     } catch (err) {

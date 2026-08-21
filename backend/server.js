@@ -18,6 +18,10 @@ app.use(cors({ origin: process.env.CLIENT_URL || "*" }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
+app.use("/api", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
 
 // --- Health check ---
 app.get("/api/health", (req, res) => {

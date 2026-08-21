@@ -41,6 +41,7 @@ async function request(path, { method = "GET", body, headers = {}, auth = true }
       method,
       headers: finalHeaders,
       body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
+      cache: "no-store",
     });
   } catch (err) {
     throw new ApiError("Could not reach the server. Is the backend running?", 0);

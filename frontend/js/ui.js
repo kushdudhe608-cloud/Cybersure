@@ -76,11 +76,11 @@ export function resultCardHtml(result, title) {
         </h4>
         <ul class="space-y-2">${reasons}</ul>
       </div>
-      <div class="mt-5 flex flex-wrap gap-2">
-        <button data-action="copy-result" class="btn-secondary text-xs py-2 flex items-center gap-1.5"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Result</button>
-        <button data-action="download-result" class="btn-secondary text-xs py-2 flex items-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Report</button>
-        <button data-action="share-result" class="btn-secondary text-xs py-2 flex items-center gap-1.5"><i data-lucide="share-2" class="w-3.5 h-3.5"></i> Share Report</button>
-      </div>
+      <div class="mt-5 grid grid-cols-1 xs:grid-cols-3 sm:flex sm:flex-wrap gap-2">
+  <button data-action="copy-result" class="btn-secondary text-xs py-2.5 sm:py-2 flex items-center justify-center gap-1.5"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Result</button>
+  <button data-action="download-result" class="btn-secondary text-xs py-2.5 sm:py-2 flex items-center justify-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Report</button>
+  <button data-action="share-result" class="btn-secondary text-xs py-2.5 sm:py-2 flex items-center justify-center gap-1.5"><i data-lucide="share-2" class="w-3.5 h-3.5"></i> Share Report</button>
+</div>
     </div>`;
 }
 
@@ -104,17 +104,30 @@ export function mountResultCard(root) {
     toast.success("Result copied to clipboard");
   });
 
-  card.querySelector('[data-action="download-result"]')?.addEventListener("click", () => {
-    const text = `CyberSure Security Report\n\n${buildText()}\n\nGenerated: ${new Date().toLocaleString()}`;
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `cybersure-report-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Report downloaded");
-  });
+  card.querySelector('[data-action="download-result"]')?.addEventListener("click", async () => {
+  const text = `CyberSure Security Report\n\n${buildText()}\n\nGenerated: ${new Date().toLocaleString()}`;
+  const filename = `cybersure-report-${Date.now()}.txt`;
+
+  const file = new File([text], filename, { type: "text/plain" });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: "CyberSure Security Report" });
+      toast.success("Report ready to save");
+      return;
+    } catch {
+      return;
+    }
+  }
+
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast.success("Report downloaded");
+});
 
   card.querySelector('[data-action="share-result"]')?.addEventListener("click", async () => {
     const text = `CyberSure security scan result: ${result.status} (${result.riskScore}% risk)`;

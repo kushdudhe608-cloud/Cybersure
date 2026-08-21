@@ -36,42 +36,44 @@ export function renderNavbar() {
   const root = document.getElementById("navbar-root");
   const path = currentPath();
   const links = [...publicLinks, ...(isAuthenticated() ? authedLinks : []), ...(isAdmin() ? [{ to: "/admin", label: "Admin" }] : [])];
+  const isFirstRender = !root.dataset.rendered;
+  root.dataset.rendered = "1";
 
   root.innerHTML = `
-    <header class="sticky top-0 z-50 bg-background/85 backdrop-blur border-b border-ink/5">
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2 group">
-          <span class="relative flex items-center justify-center w-8 h-8">
+    <header class="sticky top-0 z-50 bg-background/85 backdrop-blur border-b border-ink/5 ${isFirstRender ? "animate-nav-in" : ""}">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <span class="relative flex items-center justify-center w-10 h-10">
             <span class="absolute inset-0 rounded-full bg-primary/20 blur-md group-hover:bg-primary/40 transition-colors animate-pulseSlow"></span>
-            ${flogoSvg("w-6 h-6 relative group-hover:scale-110 transition-transform")}
+            ${flogoSvg("w-7 h-7 relative group-hover:scale-110 transition-transform duration-300")}
           </span>
-          <span class="font-display font-normal tracking-tight text-lg text-ink">CyberSure</span>
+          <span class="font-display font-normal tracking-tight text-xl text-ink">CyberSure</span>
         </a>
 
-        <div class="hidden md:flex items-center gap-7">
+        <div class="hidden md:flex items-center gap-8">
           ${links.map((l) => linkHtml(l, path === l.to)).join("")}
         </div>
 
-        <div class="hidden md:flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-3.5">
           ${themeToggleHtml()}
           ${
             isAuthenticated()
               ? `<a href="/profile" class="flex items-center gap-2 text-sm text-ink/70 hover:text-ink transition-colors"><i data-lucide="user" class="w-4 h-4"></i>${(authState.user?.name || "").split(" ")[0]}</a>
                  <button id="logout-btn" class="btn-secondary flex items-center gap-1.5 text-sm py-2"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button>`
               : `<a href="/login" class="text-sm font-medium text-ink/70 hover:text-ink transition-colors">Login</a>
-                 <a href="/signup" class="btn-primary text-sm">Sign Up</a>`
+                 <a href="/signup" class="btn-primary text-sm hover:scale-105 transition-transform">Sign Up</a>`
           }
         </div>
 
         <div class="md:hidden flex items-center gap-3">
           ${themeToggleHtml()}
-          <button id="mobile-toggle" class="text-ink" aria-label="Toggle menu">
-            <i data-lucide="${mobileOpen ? "x" : "menu"}" class="w-6 h-6"></i>
+          <button id="mobile-toggle" class="text-ink w-9 h-9 flex items-center justify-center" aria-label="Toggle menu">
+            <i data-lucide="${mobileOpen ? "x" : "menu"}" class="w-6 h-6 transition-transform duration-200 ${mobileOpen ? "rotate-90" : ""}"></i>
           </button>
         </div>
       </nav>
 
-      <div id="mobile-menu" class="md:hidden overflow-hidden border-t border-ink/5 ${mobileOpen ? "" : "hidden"}">
+      <div id="mobile-menu" class="md:hidden overflow-hidden border-t border-ink/5 transition-all duration-300 ease-out ${mobileOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0 border-t-0"}">
         <div class="px-4 py-4 flex flex-col gap-4">
           ${links.map((l) => linkHtml(l, path === l.to, "mobile-link")).join("")}
           <div class="h-px bg-ink/10"></div>
@@ -88,7 +90,7 @@ export function renderNavbar() {
 
   icons();
 
-   root.querySelectorAll(".theme-toggle-btn").forEach((btn) => btn.addEventListener("click", toggleTheme));
+  root.querySelectorAll(".theme-toggle-btn").forEach((btn) => btn.addEventListener("click", toggleTheme));
   root.querySelectorAll(".mobile-link").forEach((el) => el.addEventListener("click", () => (mobileOpen = false)));
   root.querySelector("#mobile-toggle")?.addEventListener("click", () => {
     mobileOpen = !mobileOpen;
