@@ -118,17 +118,6 @@ router.post(
   )
 );
 
-// @route   POST /api/checkLogin   { url }
-router.post(
-  "/checkLogin",
-  protect,
-  handleCheck(
-    "login",
-    (req) => req.body.url,
-    (req, url) => analyzer.checkLoginPage(url)
-  )
-);
-
 // @route   POST /api/checkScreenshot   multipart file "screenshot"
 router.post(
   "/checkScreenshot",

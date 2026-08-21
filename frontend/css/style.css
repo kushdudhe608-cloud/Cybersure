@@ -5,6 +5,7 @@
    Values are "R G B" triplets so Tailwind's opacity modifiers keep working.
    Ported 1:1 from the original React build's index.css.
    --------------------------------------------------------------------- */
+
 .dark {
   --color-background: 15 16 17;
   --color-background-alt: 9 10 11;

@@ -1,7 +1,7 @@
 import { api } from "../api.js";
 import { statusBadgeClass, escapeHtml, icons } from "../ui.js";
 
-const TYPES = ["website", "email", "whatsapp", "job", "qr", "phone", "login", "screenshot", "document"];
+const TYPES = ["website", "email", "whatsapp", "job", "qr", "phone", "screenshot", "document"];
 const STATUSES = ["Safe", "Suspicious", "Dangerous"];
 const TYPE_LABELS = { whatsapp: "SMS" };
 const typeLabel = (t) => TYPE_LABELS[t] || t.charAt(0).toUpperCase() + t.slice(1);

@@ -41,8 +41,8 @@ const run = async () => {
     { type: "job", input: "HR offering job with Rs.2000 registration fee", riskScore: 81, status: "Dangerous", reasons: ["Joining fee requested"] },
     { type: "phone", input: "+91 9999999999", riskScore: 40, status: "Suspicious", reasons: ["Moderate spam reports"] },
     { type: "email", input: "Team meeting notes attached", riskScore: 8, status: "Safe", reasons: ["No phishing indicators found"] },
-    { type: "login", input: "http://secure-hdfc-verify.net", riskScore: 95, status: "Dangerous", reasons: ["Brand impersonation", "No HTTPS"] },
-  ];
+      { type: "website", input: "http://secure-hdfc-verify.net", riskScore: 95, status: "Dangerous", reasons: ["Brand impersonation", "No HTTPS"] },
+     ];
 
   for (const sample of samples) {
     await History.create({ ...sample, userId: demoUser.id });

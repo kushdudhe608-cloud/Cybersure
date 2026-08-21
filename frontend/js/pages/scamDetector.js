@@ -10,7 +10,6 @@ const tabs = [
   { key: "job", label: "Job Offer", icon: "briefcase" },
   { key: "qr", label: "QR Code", icon: "qr-code" },
   { key: "phone", label: "Phone Number", icon: "phone" },
-  { key: "login", label: "Fake Login", icon: "key-round" },
   { key: "screenshot", label: "Screenshot", icon: "image" },
   { key: "document", label: "Document", icon: "file-text" },
 ];
@@ -57,16 +56,6 @@ const SIMPLE_CHECKERS = {
     endpoint: "/checkWebsite",
     buildBody: (v) => ({ url: v.trim() }),
     emptyError: "Please enter a website URL",
-  },
-  login: {
-    title: "Fake Login Page Scan",
-    fieldLabel: "Login Page URL",
-    placeholder: "http://secure-bank-verify.net/login",
-    icon: "key-round",
-    input: "text",
-    endpoint: "/checkLogin",
-    buildBody: (v) => ({ url: v.trim() }),
-    emptyError: "Please enter a login page URL",
   },
   phone: {
     title: "Phone Number Scan",
@@ -391,7 +380,6 @@ const CHECKER_MOUNTERS = {
   job: mountJobChecker,
   qr: mountQrChecker,
   phone: (r) => mountSimpleChecker(r, "phone"),
-  login: (r) => mountSimpleChecker(r, "login"),
   screenshot: mountScreenshotChecker,
   document: mountDocumentChecker,
 };
