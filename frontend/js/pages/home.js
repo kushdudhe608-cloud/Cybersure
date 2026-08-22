@@ -61,9 +61,8 @@ export function render(root) {
   root.innerHTML = `
     <div>
       <section class="relative overflow-hidden">
-        <div class="absolute inset-x-0 top-0 h-[560px] pointer-events-none"
-          style="background:linear-gradient(rgb(var(--color-background)), rgb(var(--color-background-alt)) 55%, transparent 100%)" aria-hidden="true"></div>
-
+                <div class="absolute inset-x-0 top-0 h-[560px] pointer-events-none"
+          style="background:linear-gradient(rgb(var(--color-background)), rgb(var(--color-card)) 55%, transparent 100%)" aria-hidden="true"></div>
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 relative text-center">
           <h1 class="font-display font-normal text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-ink animate-fade-in-up" style="animation-delay:.05s">
             See the scam <em class="italic text-primary">before</em> it sees you.
@@ -99,8 +98,7 @@ export function render(root) {
         </div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-          <div class="bg-[#cacaca] dark:bg-white rounded-2xl p-8 sm:p-10 grid grid-cols-3 gap-6 text-center animate-fade-in-up shadow-[0_8px_30px_-6px_rgba(120,120,120,0.35)] dark:shadow-[0_0_28px_-4px_rgba(255,255,255,0.18)]" style="animation-delay:.4s">
-            ${stats
+                    <div class="bg-[#eef0f5] dark:bg-white rounded-2xl p-8 sm:p-10 grid grid-cols-3 gap-6 text-center animate-fade-in-up shadow-[0_8px_30px_-6px_rgba(120,120,120,0.35)] dark:shadow-[0_0_28px_-4px_rgba(255,255,255,0.18)]" style="animation-delay:.4s">${stats
               .map(
                 (s) => `
               <div class="transition-transform duration-300 hover:scale-105">
