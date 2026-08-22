@@ -1,7 +1,10 @@
 // Intro splash shown once per browser session, right when the page first
-// loads: a big "C" scales in, then "ybersure" slides in beside it to
-// complete the "Cybersure" wordmark - matching the same C + ybersure
-// treatment used in the navbar brand mark.
+// loads: the full logo mark (the "C" thumb glyph) scales in big, centered -
+// then "ybersure" appears beside it one letter at a time to complete the
+// wordmark, matching the same logo + "ybersure" pairing used in the navbar.
+import { flogoSvg } from "./flogo.js";
+
+const REST_OF_WORD = "ybersure";
 const SEEN_KEY = "cybersure-intro-seen";
 
 export function showSplashIfNeeded(onDone) {
@@ -13,42 +16,36 @@ export function showSplashIfNeeded(onDone) {
 
   const root = document.getElementById("splash");
 
+  const letters = REST_OF_WORD.split("")
+    .map((ch, i) => `<span style="animation-delay:${0.85 + i * 0.07}s" class="splash-letter inline-block opacity-0 text-ink">${ch}</span>`)
+    .join("");
+
   root.innerHTML = `
     <div id="splash-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-background overflow-hidden transition-opacity duration-500">
-      <div class="relative flex flex-col items-center">
+      <div class="relative flex items-center">
         <div class="absolute rounded-full bg-primary/25 blur-3xl splash-glow" style="width:220px;height:220px"></div>
-        <div class="relative flex items-end">
-          <span class="splash-c font-display font-bold leading-none text-ink opacity-0" style="font-size:4.5rem">C</span>
-          <span class="splash-rest font-display font-normal leading-none text-ink opacity-0" style="font-size:3rem">ybersure</span>
+        <div class="splash-mark relative w-24 h-24 sm:w-28 sm:h-28">
+          ${flogoSvg("w-full h-full text-ink")}
         </div>
-        <div class="h-px w-40 mt-5 bg-primary origin-left splash-rule" style="transform:scaleX(0)"></div>
-        <p class="mt-3 text-xs font-mono tracking-widest text-muted uppercase splash-caption opacity-0">Scanning for fraud</p>
+        <h1 class="relative font-display font-normal text-4xl sm:text-5xl text-ink -ml-1">${letters}</h1>
       </div>
     </div>
     <style>
       @keyframes splashGlowIn { 0% { transform: scale(0); opacity:0;} 40% { transform: scale(1.3); opacity:0.6;} 100% { transform: scale(1); opacity:0.3;} }
       .splash-glow { animation: splashGlowIn 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
 
-      @keyframes splashCIn {
-        0% { opacity: 0; transform: scale(0.3) rotate(-12deg); }
+      @keyframes splashMarkIn {
+        0% { opacity: 0; transform: scale(0.3) rotate(-10deg); }
         60% { opacity: 1; transform: scale(1.15) rotate(2deg); }
         100% { opacity: 1; transform: scale(1) rotate(0deg); }
       }
-      .splash-c { animation: splashCIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards; }
+      .splash-mark { animation: splashMarkIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; opacity: 0; }
 
-      @keyframes splashRestIn {
-        from { opacity: 0; transform: translateX(-18px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-      .splash-rest { animation: splashRestIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.55s forwards; }
-
-      .splash-rule { animation: splashRuleIn 0.6s ease-in-out 1.3s forwards; }
-      @keyframes splashRuleIn { to { transform: scaleX(1); } }
-      .splash-caption { animation: splashFadeIn 0.5s ease 1.5s forwards; }
-      @keyframes splashFadeIn { to { opacity:1; } }
+      @keyframes splashLetterIn { from { opacity:0; transform: translateY(10px) scale(0.7);} to { opacity:1; transform: translateY(0) scale(1);} }
+      .splash-letter { animation: splashLetterIn 0.35s cubic-bezier(0.16,1,0.3,1) forwards; }
 
       @media (prefers-reduced-motion: reduce) {
-        .splash-c, .splash-rest, .splash-glow, .splash-rule, .splash-caption { animation: none !important; opacity: 1 !important; transform: none !important; }
+        .splash-mark, .splash-letter, .splash-glow { animation: none !important; opacity: 1 !important; transform: none !important; }
       }
     </style>`;
 
@@ -58,11 +55,11 @@ export function showSplashIfNeeded(onDone) {
   setTimeout(() => {
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
-  }, 2000);
+  }, 2200);
 
   setTimeout(() => {
     document.body.style.overflow = "";
     root.innerHTML = "";
     onDone();
-  }, 2600);
+  }, 2800);
 }

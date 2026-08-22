@@ -1,3 +1,4 @@
+import { flogoSvg } from "./flogo.js";
 import { state as authState, isAuthenticated, isAdmin, logout, onAuthChange } from "./auth.js";
 import { getTheme, toggleTheme, onThemeChange } from "./theme.js";
 import { navigate, currentPath } from "./router.js";
@@ -25,6 +26,10 @@ function themeToggleHtml() {
     </button>`;
 }
 
+// Desktop nav links live inside a floating glass "pill" with a solid
+// black/white indicator that sits behind whichever link is active - same
+// idea as a sliding-tab nav, adapted to CyberSure's monochrome ink/background
+// theme instead of a colored highlight.
 function pillLinkHtml(l, active) {
   return `<a href="${l.to}" data-active="${active}" class="pill-nav-link relative z-10 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-300 ${
     active ? "text-background" : "text-ink/65 hover:text-ink"
@@ -47,12 +52,15 @@ export function renderNavbar() {
   root.innerHTML = `
     <header class="sticky top-0 z-50 bg-background/85 backdrop-blur border-b transition-all duration-300 ${scrolled ? "border-ink/10 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)]" : "border-ink/5 shadow-none"} ${isFirstRender ? "animate-nav-in" : ""}">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-20"}">
-        <a href="/" class="flex items-center gap-2.5 group shrink-0">
-          <span class="font-display font-bold tracking-tight text-[2.1rem] leading-none text-ink -mr-1">C</span>
+        <a href="/" class="flex items-center gap-2 group shrink-0">
+          <span class="relative flex items-center justify-center w-11 h-11">
+            <span class="absolute inset-0 rounded-full bg-primary/20 blur-md group-hover:bg-primary/40 transition-colors animate-pulseSlow"></span>
+            ${flogoSvg("w-9 h-9 relative text-ink group-hover:scale-110 transition-transform duration-300")}
+          </span>
           <span class="font-display font-normal tracking-tight text-[1.4rem] text-ink">ybersure</span>
         </a>
 
-        <div id="desktop-nav-pill" class="hidden md:flex items-center gap-0.5 relative bg-ink/5 dark:bg-white/5 backdrop-blur border border-ink/10 rounded-full p-1.5">
+        <div id="desktop-nav-pill" class="hidden md:flex items-center gap-0.5 relative bg-ink/5 dark:bg-white/5 backdrop-blur rounded-full p-1.5">
           <span id="nav-indicator" class="absolute top-1.5 left-1.5 h-[calc(100%-0.75rem)] rounded-full bg-ink transition-all duration-300 ease-out"></span>
           ${links.map((l) => pillLinkHtml(l, path === l.to)).join("")}
         </div>
@@ -109,6 +117,12 @@ export function renderNavbar() {
   root.querySelector("#logout-btn-mobile")?.addEventListener("click", doLogout);
 }
 
+// Measures the active pill link and moves the black/white indicator behind
+// it. Runs after every render since the whole navbar markup is rebuilt on
+// each route change (so there's nothing to animate *from* on a route
+// change - it just lands in the right spot immediately - but this keeps it
+// correctly positioned any time the link list, active page, or window size
+// changes).
 function positionNavIndicator(root) {
   const container = root.querySelector("#desktop-nav-pill");
   const indicator = root.querySelector("#nav-indicator");
@@ -132,6 +146,8 @@ function attachResizeListener() {
 }
 attachResizeListener();
 
+// Scroll-shrink effect: attached once to window, only re-renders the navbar
+// when the scrolled state actually flips (not on every scroll pixel).
 let scrollListenerAttached = false;
 function attachScrollListener() {
   if (scrollListenerAttached) return;

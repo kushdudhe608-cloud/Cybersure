@@ -30,11 +30,12 @@ export function render(root) {
         <div class="space-y-4 animate-fade-in-up">
           <div class="card p-6 flex items-start gap-4">
             <i data-lucide="mail" class="w-5 h-5 text-primary mt-0.5"></i>
-                       <div><div class="font-semibold text-sm">Email</div><div class="text-sm text-muted">cybersure2k26@gmail.com</div></div>
+            <div><div class="font-semibold text-sm">Email</div><div class="text-sm text-muted">cybersure2k26@gmail.com</div></div>
           </div>
-          <div class="card p-6 flex items-start gap-4">
-            <i data-lucide="phone" class="w-5 h-5 text-primary mt-0.5"></i>
-            <div><div class="font-semibold text-sm">Phone</div><div class="text-sm text-muted">+91 70380 79775</div></div>
+          <div class="card p-8 sm:p-9 flex items-start gap-4">
+            <i data-lucide="phone" class="w-6 h-6 text-primary mt-0.5"></i>
+            <div><div class="font-semibold text-base">Phone</div><div class="text-base text-muted">+91 70380 79775</div></div>
+          </div>
           <div class="card p-6 flex items-start gap-4">
             <i data-lucide="map-pin" class="w-5 h-5 text-primary mt-0.5"></i>
             <div><div class="font-semibold text-sm">Location</div><div class="text-sm text-muted">Pune, Maharashtra, India</div></div>
