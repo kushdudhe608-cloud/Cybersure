@@ -1,4 +1,3 @@
-import { flogoSvg } from "./flogo.js";
 import { state as authState, isAuthenticated, isAdmin, logout, onAuthChange } from "./auth.js";
 import { getTheme, toggleTheme, onThemeChange } from "./theme.js";
 import { navigate, currentPath } from "./router.js";
@@ -26,10 +25,15 @@ function themeToggleHtml() {
     </button>`;
 }
 
-function linkHtml(l, active, extra = "", index = 0) {
-  return `<a href="${l.to}" class="relative text-sm font-medium transition-all duration-200 py-1 group/link ${active ? "text-primary" : "text-ink/70 hover:text-ink hover:-translate-y-0.5"} ${extra}" style="${extra.includes("mobile-link") ? `animation-delay:${index * 0.05}s` : ""}">
-    ${active ? '<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 align-middle animate-pulseSlow"></span>' : ""}${l.label}
-    <span class="absolute -bottom-1 left-0 h-px bg-gradient-to-r from-primary to-accent transition-all duration-300 ease-out ${active ? "w-full" : "w-0 group-hover/link:w-full"}"></span>
+function pillLinkHtml(l, active) {
+  return `<a href="${l.to}" data-active="${active}" class="pill-nav-link relative z-10 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-300 ${
+    active ? "text-background" : "text-ink/65 hover:text-ink"
+  }">${l.label}</a>`;
+}
+
+function mobileLinkHtml(l, active, index) {
+  return `<a href="${l.to}" class="mobile-link relative text-sm font-medium py-1 ${active ? "text-primary" : "text-ink/70"} animate-fade-in-up" style="animation-delay:${index * 0.05}s">
+    ${active ? '<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 align-middle"></span>' : ""}${l.label}
   </a>`;
 }
 
@@ -43,19 +47,17 @@ export function renderNavbar() {
   root.innerHTML = `
     <header class="sticky top-0 z-50 bg-background/85 backdrop-blur border-b transition-all duration-300 ${scrolled ? "border-ink/10 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)]" : "border-ink/5 shadow-none"} ${isFirstRender ? "animate-nav-in" : ""}">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-20"}">
-        <a href="/" class="flex items-center gap-2.5 group">
-          <span class="relative flex items-center justify-center w-10 h-10">
-            <span class="absolute inset-0 rounded-full bg-primary/20 blur-md group-hover:bg-primary/40 transition-colors animate-pulseSlow"></span>
-            ${flogoSvg("w-7 h-7 relative group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300")}
-          </span>
-          <span class="font-display font-normal tracking-tight text-xl text-ink">CyberSure</span>
+        <a href="/" class="flex items-center gap-2.5 group shrink-0">
+          <span class="font-display font-bold tracking-tight text-[2.1rem] leading-none text-ink -mr-1">C</span>
+          <span class="font-display font-normal tracking-tight text-[1.4rem] text-ink">ybersure</span>
         </a>
 
-        <div class="hidden md:flex items-center gap-8">
-          ${links.map((l) => linkHtml(l, path === l.to)).join("")}
+        <div id="desktop-nav-pill" class="hidden md:flex items-center gap-0.5 relative bg-ink/5 dark:bg-white/5 backdrop-blur border border-ink/10 rounded-full p-1.5">
+          <span id="nav-indicator" class="absolute top-1.5 left-1.5 h-[calc(100%-0.75rem)] rounded-full bg-ink transition-all duration-300 ease-out"></span>
+          ${links.map((l) => pillLinkHtml(l, path === l.to)).join("")}
         </div>
 
-        <div class="hidden md:flex items-center gap-3.5">
+        <div class="hidden md:flex items-center gap-3.5 shrink-0">
           ${themeToggleHtml()}
           ${
             isAuthenticated()
@@ -76,7 +78,7 @@ export function renderNavbar() {
 
       <div id="mobile-menu" class="md:hidden overflow-hidden border-t border-ink/5 transition-all duration-300 ease-out ${mobileOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0 border-t-0"}">
         <div class="px-4 py-4 flex flex-col gap-4">
-          ${links.map((l, i) => linkHtml(l, path === l.to, mobileOpen ? "mobile-link animate-fade-in-up" : "mobile-link", i)).join("")}
+          ${links.map((l, i) => mobileLinkHtml(l, path === l.to, i)).join("")}
           <div class="h-px bg-ink/10"></div>
           ${
             isAuthenticated()
@@ -90,6 +92,7 @@ export function renderNavbar() {
     </header>`;
 
   icons();
+  positionNavIndicator(root);
 
   root.querySelectorAll(".theme-toggle-btn").forEach((btn) => btn.addEventListener("click", toggleTheme));
   root.querySelectorAll(".mobile-link").forEach((el) => el.addEventListener("click", () => (mobileOpen = false)));
@@ -106,8 +109,29 @@ export function renderNavbar() {
   root.querySelector("#logout-btn-mobile")?.addEventListener("click", doLogout);
 }
 
-// Scroll-shrink effect: attached once to window, only re-renders the navbar
-// when the scrolled state actually flips (not on every scroll pixel).
+function positionNavIndicator(root) {
+  const container = root.querySelector("#desktop-nav-pill");
+  const indicator = root.querySelector("#nav-indicator");
+  const activeLink = container?.querySelector('[data-active="true"]');
+  if (!container || !indicator || !activeLink) return;
+  const cRect = container.getBoundingClientRect();
+  const aRect = activeLink.getBoundingClientRect();
+  indicator.style.width = `${aRect.width}px`;
+  indicator.style.transform = `translateX(${aRect.left - cRect.left - 6}px)`;
+}
+
+let resizeListenerAttached = false;
+function attachResizeListener() {
+  if (resizeListenerAttached) return;
+  resizeListenerAttached = true;
+  window.addEventListener(
+    "resize",
+    () => positionNavIndicator(document.getElementById("navbar-root")),
+    { passive: true }
+  );
+}
+attachResizeListener();
+
 let scrollListenerAttached = false;
 function attachScrollListener() {
   if (scrollListenerAttached) return;
